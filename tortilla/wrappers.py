@@ -112,7 +112,7 @@ class Client(object):
     def request(self, method, url, path=(), extension=None, suffix=None,
                 params=None, headers=None, data=None, debug=None,
                 cache_lifetime=None, silent=None, ignore_cache=False,
-                format='json', delay=0.0, formatter=None, **kwargs):
+                format='json', delay=0.0, formatter=None, response=False, **kwargs):
         """Requests a URL and returns a *Bunched* response.
 
         This method basically wraps the request method of the requests
@@ -147,6 +147,7 @@ class Client(object):
             defaults to 'json'
         :param delay: (option) Ensures a minimum delay of seconds between
             requests.
+        :param response: (option) Returns original response instead of Bunch object.
         :param kwargs: (optional) Arguments that will be passed to
             the `requests.request` method
         :return: :class:`Bunch` object from JSON-parsed response
@@ -254,6 +255,8 @@ class Client(object):
                   text=parsed_response)
 
         # return our findings and try to make it a bit nicer
+        if response:
+            return r
         if has_body:
             return bunchify(parsed_response)
         return None
